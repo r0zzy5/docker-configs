@@ -1,12 +1,19 @@
 version: '3.3'
+volumes:
+    portainer_data:
+        driver: local
+        driver_opts:
+            type: nfs
+            o: nfsvers=4,addr=truenas.osborn.xyz,rw
+            device: ":/mnt/data/appdata/portainer"
 services:
-  portainer-ce:
-    ports:
-      - '8000:8000'
-      - '9443:9443'
-    container_name: portainer
-    restart: always
-    volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock'
-      - '/mnt/appdata/portainer:/data'
-    image: 'portainer/portainer-ce:latest'
+    portainer-ce:
+        ports:
+            - '8000:8000'
+            - '9443:9443'
+        container_name: portainer
+        restart: always
+        volumes:
+            - '/var/run/docker.sock:/var/run/docker.sock'
+            - 'portainer_data:/data'
+        image: 'portainer/portainer-ce:latest'
