@@ -1,4 +1,17 @@
 version: "2.1"
+volumes:
+  config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=truenas.osborn.xyz,rw
+      device: ":/mnt/data/appdata/deluge"
+  downloads:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=truenas.osborn.xyz,rw
+      device: ":/mnt/data/downloads"
 services:
   deluge:
     image: lscr.io/linuxserver/deluge:latest
@@ -9,8 +22,8 @@ services:
       - TZ=Europe/London
       - DELUGE_LOGLEVEL=error #optional
     volumes:
-      - /mnt/appdata/deluge:/config
-      - /mnt/downloads:/downloads
+      - config:/config
+      - downloads:/downloads
     ports:
       - 8112:8112
       - 6881:6881
