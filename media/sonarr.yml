@@ -1,4 +1,23 @@
 version: "2.1"
+volumes:
+  config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=truenas.osborn.xyz,rw
+      device: ":/mnt/data/appdata/sonarr"
+  tv:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=truenas.osborn.xyz,rw
+      device: ":/mnt/data/tv"
+  downloads:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=truenas.osborn.xyz,rw
+      device: ":/mnt/data/downloads"
 services:
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -8,9 +27,9 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - /mnt/appdata/sonarr:/config
-      - /mnt/tv:/tv
-      - /mnt/downloads:/downloads
+      - config:/config
+      - tv:/tv
+      - downloads:/downloads
     ports:
       - 8989:8989
     restart: unless-stopped
