@@ -1,4 +1,23 @@
 version: "2.1"
+volumes:
+  config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=truenas.osborn.xyz,rw
+      device: ":/mnt/data/appdata/radarr"
+  movies:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=truenas.osborn.xyz,rw
+      device: ":/mnt/data/movies"
+  downloads:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=truenas.osborn.xyz,rw
+      device: ":/mnt/data/downloads"
 services:
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -8,9 +27,9 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - /mnt/appdata/radarr:/config
-      - /mnt/movies:/movies #optional
-      - /mnt/downloads:/downloads #optional
+      - config:/config
+      - movies:/movies #optional
+      - downloads:/downloads #optional
     ports:
       - 7878:7878
     restart: unless-stopped
