@@ -1,4 +1,11 @@
 version: "2.1"
+volumes:
+  config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=truenas.osborn.xyz,rw
+      device: ":/mnt/data/appdata/prowlarr"
 services:
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:develop
@@ -8,7 +15,7 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - /mnt/appdata/prowlarr:/config
+      - config:/config
     ports:
       - 9696:9696
     restart: unless-stopped
