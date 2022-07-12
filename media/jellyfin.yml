@@ -1,4 +1,23 @@
 version: "2.1"
+volumes:
+  config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=truenas.osborn.xyz,rw
+      device: ":/mnt/data/appdata/jellyfin"
+  tv:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=truenas.osborn.xyz,rw
+      device: ":/mnt/data/tv"
+  movies:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=truenas.osborn.xyz,rw
+      device: ":/mnt/data/movies"
 services:
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
@@ -8,9 +27,9 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - /mnt/appdata/jellyfin:/config
-      - /mnt/tv:/data/tvshows
-      - /mnt/movies:/data/movies
+      - config:/config
+      - tv:/data/tvshows
+      - movies:/data/movies
     ports:
       - 8096:8096
       - 8920:8920 #optional
